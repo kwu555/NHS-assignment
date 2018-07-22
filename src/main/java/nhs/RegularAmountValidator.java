@@ -6,6 +6,9 @@ import java.text.DecimalFormat;
 
 public class RegularAmountValidator implements ConstraintValidator<CheckRegularAmount,RegularAmount> {
 
+    /**
+     *  probably should have a maximum digits, but it's not specify in the description
+     */
     private static final String regexForTwoDecimal = "^\\d+\\.\\d{0,2}$";
     private static final String regexForNumber = "^\\d+";
 
@@ -39,13 +42,16 @@ public class RegularAmountValidator implements ConstraintValidator<CheckRegularA
     }
 
     private boolean weeklyDivisible(final String amount, final Integer weeks){
-        //  precision error is a known problem in CS, e.g. 5206.76 / 52 = 100.13000000001
-        // apply division first and then multiply the value and see if it returns the original number
+        /**
+         precision error is a known problem in CS, e.g. 5206.76 / 52 = 100.13000000001
+         apply division first and format to 2 decimals
+         then multiply the value and see if it returns the original number
+         */
         Double result = Double.valueOf(amount) / weeks;
 
         DecimalFormat format = new DecimalFormat("###.##");
-
         String roundedValue = format.format(result);
+
         Double getOriginalValue = Double.valueOf(roundedValue) * weeks;
 
         if(getOriginalValue.equals(Double.valueOf(amount))){
@@ -56,7 +62,7 @@ public class RegularAmountValidator implements ConstraintValidator<CheckRegularA
     }
 
     private boolean checkValidValueWithRegex(final String amount){
-        // String should be in format like: 250, 250.00000, 250.11
-        return amount.matches(regexForNumber) ||amount.matches(regexForTwoDecimal);
+        // String should be in format like: 250, 250.00, 250.11, 1.1 etc.
+        return amount.matches(regexForNumber) || amount.matches(regexForTwoDecimal);
     }
 }

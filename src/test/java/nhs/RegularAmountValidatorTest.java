@@ -36,6 +36,7 @@ public class RegularAmountValidatorTest {
         testRegularAmount(WEEK,"500.1111",false);
         testRegularAmount(WEEK,"500",true);
         testRegularAmount(WEEK,"500.11",true);
+        testRegularAmount(WEEK,"1",true);
     }
 
     @Test
@@ -43,12 +44,15 @@ public class RegularAmountValidatorTest {
         testRegularAmount(TWO_WEEK,"500.00",true);
         testRegularAmount(TWO_WEEK,"777.11",false);
         testRegularAmount(TWO_WEEK,"100.5555",false);
+        testRegularAmount(TWO_WEEK,"100000",true);
     }
 
     @Test
     public void testFourWeeks(){
         testRegularAmount(FOUR_WEEK,"888.81",false);
         testRegularAmount(FOUR_WEEK,"111.222",false);
+        testRegularAmount(FOUR_WEEK,"1776.4",true);
+        testRegularAmount(FOUR_WEEK,"60",true);
     }
 
 
@@ -57,6 +61,7 @@ public class RegularAmountValidatorTest {
         testRegularAmount(QUARTER,"1444.43",true);
         testRegularAmount(QUARTER,"888.81",false);
         testRegularAmount(QUARTER,"1690",true);
+        testRegularAmount(QUARTER,"5778.5",true);
     }
 
     @Test
@@ -64,6 +69,7 @@ public class RegularAmountValidatorTest {
         testRegularAmount(MONTH,"1444.43",true);
         testRegularAmount(MONTH,"888.81",true);
         testRegularAmount(MONTH,"1690.0001",false);
+        testRegularAmount(MONTH,"9",true);
     }
 
     @Test
