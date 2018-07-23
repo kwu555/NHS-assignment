@@ -29,6 +29,11 @@ public class RegularAmountValidatorTest {
         testRegularAmount(MONTH,"asdioasdoa",false);
         testRegularAmount(MONTH,"12312.abc",false);
         testRegularAmount(WEEK,"-555",false);
+        testRegularAmount(TWO_WEEK,"0",false);
+        testRegularAmount(WEEK,"0.00",false);
+        testRegularAmount(WEEK,"0.89",false);
+        testRegularAmount(WEEK,"0100000",false);
+        testRegularAmount(TWO_WEEK,"20.20",true);
     }
 
     @Test

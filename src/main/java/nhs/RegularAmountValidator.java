@@ -8,9 +8,11 @@ public class RegularAmountValidator implements ConstraintValidator<CheckRegularA
 
     /**
      *  probably should have a maximum digits, but it's not specify in the description
+     *
+     *  also any value starts with zero is not allowed,e.g. 012, 0.1, 0.99, 010000
      */
-    private static final String regexForTwoDecimal = "^\\d+\\.\\d{0,2}$";
-    private static final String regexForNumber = "^\\d+";
+    private static final String regexForTwoDecimal = "^[1-9][0-9]*\\.\\d{0,2}$";
+    private static final String regexForNumber = "^[1-9][0-9]*";
 
     private static final Integer TWOWEEK_NUM = 2;
     private static final Integer FOURWEEK_NUM = 4;
@@ -41,12 +43,18 @@ public class RegularAmountValidator implements ConstraintValidator<CheckRegularA
         }
     }
 
+    /**
+     *  method to check whether week is divisible by input amount
+     * @param amount input amount
+     * @param weeks  weeks to divide
+     * @return boolean
+     */
     private boolean weeklyDivisible(final String amount, final Integer weeks){
-        /**
-         precision error is a known problem in CS, e.g. 5206.76 / 52 = 100.13000000001
-         apply division first and format to 2 decimals
-         then multiply the value and see if it returns the original number
-         */
+
+         //precision error is a known problem in CS, e.g. 5206.76 / 52 = 100.13000000001
+         //apply division first and format to 2 decimals
+         //then multiply the value and see if it returns the original number
+
         Double result = Double.valueOf(amount) / weeks;
 
         DecimalFormat format = new DecimalFormat("###.##");
@@ -61,6 +69,11 @@ public class RegularAmountValidator implements ConstraintValidator<CheckRegularA
 
     }
 
+    /**
+     *  method to check whether input amount meets the format
+     * @param amount input amount
+     * @return correct format or not
+     */
     private boolean checkValidValueWithRegex(final String amount){
         // String should be in format like: 250, 250.00, 250.11, 1.1 etc.
         return amount.matches(regexForNumber) || amount.matches(regexForTwoDecimal);
